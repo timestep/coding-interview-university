@@ -11,7 +11,8 @@ interface List {
   pushFront(value: number); //adds an item to the front of the list
   popFront(): number; //remove front item and return its value
   pushBack(value); // adds an item at the end
-  popBack(): number; // removes end item and returns its value
+  // removes end item and returns its value
+  popBack(): number; 
   front(): number; //get value of front item
   back(): number; //get value of end item
   insert(index: number, value: number); // insert value at index, so _current item at that index is pointed to by new item at index
@@ -129,18 +130,81 @@ const buildList = (arr: number[]): List => {
 
     return newNode.data;
   }
-  const erase = () => {
-    return 0;
+  const erase = (idx: number) => {
+    // TODO: id if index between first half or second half, for tail
+    // TODO: catch for tail and head
+    let _currIdx = 0;
+    let _currNode = _head.next;
+    let _prevNode = _head.prev;
+    if(idx > size() - 1) return null;
+
+    if(idx === 0) {
+      _head.next = _currNode.next;
+      _currNode.next.prev = _head;
+      _size--;
+      return _currNode.data;
+    }
+
+    while (_currIdx < idx) {
+      _prevNode = _currNode;
+      _currNode = _currNode.next
+      _currIdx++
+    }
+    let _nextNode = _currNode.next;
+    // let _prevNode = _currNode.prev;
+    _prevNode.next = _nextNode;
+    _nextNode.prev = _prevNode;
+
+    _size--;
+
+    return _currNode.data; 
   }
-  const valueNFromEnd = () => {
-    return 0;
+  const valueNFromEnd = (idx: number) => {
+    let _currIdx = 0;
+    let _currNode = _tail.prev;
+    if(idx > size() - 1) return null;
+
+    while (_currIdx < idx) {
+      _currNode = _currNode.prev
+      _currIdx++
+    }
+
+    return _currNode.data;
   }
-  const removeValue = () => {
-    return 0;
+  const removeValue = (val: number) => {
+    let _currIdx = 0;
+    let _currNode = _head.next;
+    // is 0(2n);
+    // can make 0(n) but lazy to write inside while.;
+    while (_currNode.next !== null) {
+      if(_currNode.data === val) {
+        erase(_currIdx);
+        break;
+      };
+      _currNode = _currNode.next
+      _currIdx++
+    }
+
+    return _currNode.data;
   }
   const reverse = () => {
-    return 0;
+    // REDO IMPLEMENTAIOTN
+    // This implementation is off by one.
+    let _temp = _tail.prev;
+    let _curr = _head;
+
+    while(_curr) {
+      _temp = _curr.prev;
+      _curr.prev = _curr.next;
+      _curr.next = _temp;
+      _curr = _curr.prev;  
+    }
+
+    if(_temp !== null){ 
+      _head = _temp.prev;
+    }
   }
+
   return {
     size,
     isEmpty,
@@ -163,7 +227,7 @@ const test = [0, 1, 2, 3, 4];
 const emptyTest = [];
 
 const emptyLinkedList = buildList(emptyTest)
-const linkedList = buildList(test);
+let linkedList = buildList(test);
 
 console.log(emptyLinkedList.size(), 0)
 console.log(emptyLinkedList.isEmpty(), true)
@@ -171,36 +235,94 @@ console.log(linkedList.size(), 5)
 console.log(linkedList.isEmpty(), false)
 console.log(linkedList.valueAt(5), null)
 
+linkedList = buildList(test);
 console.log(linkedList.pushFront(4), 4)
 console.log(linkedList.size(), 6)
 
-
-console.log(linkedList.valueAt(0), 4)
-console.log(linkedList.valueAt(1), 0)
-
-console.log(linkedList.popFront(), 4)
-console.log(linkedList.size(), 5)
+linkedList = buildList(test);
 console.log(linkedList.valueAt(0), 0)
+console.log(linkedList.valueAt(1), 1)
 
+linkedList = buildList(test);
+console.log(linkedList.popFront(), 0)
+console.log(linkedList.size(), 4)
+console.log(linkedList.valueAt(0), 1)
+
+linkedList = buildList(test);
 console.log(linkedList.pushBack(6), 6)
 console.log(linkedList.size(), 6)
 console.log(linkedList.valueAt(5), 6)
 console.log(linkedList.pushBack(7), 7)
-console.log(linkedList.size(), 6)
+console.log(linkedList.size(), 7)
 console.log(linkedList.valueAt(6), 7)
 
-console.log(linkedList.popBack(), 7)
-console.log(linkedList.size(), 6)
+linkedList = buildList(test);
+console.log(linkedList.popBack(), 4)
+console.log(linkedList.size(), 4)
 console.log(linkedList.valueAt(6), null)
-console.log(linkedList.valueAt(5), 6)
+console.log(linkedList.valueAt(5), null)
 
+linkedList = buildList(test);
 console.log(linkedList.front(), 0);
-console.log(linkedList.back(), 6)
+console.log(linkedList.back(), 4)
 
+linkedList = buildList(test);
+console.log(linkedList.valueAt(0), 0)
 console.log(linkedList.valueAt(1), 1)
 console.log(linkedList.valueAt(2), 2)
 console.log(linkedList.valueAt(3), 3)
+console.log(linkedList.valueAt(4), 4);
+console.log(linkedList.valueAt(5), null);
 
+linkedList = buildList(test);
 console.log(linkedList.insert(2,10))
-console.log(linkedList.size(), 7);
-console.log(linkedList.valueAt(2), 10)
+console.log(linkedList.insert(2,10))
+console.log(linkedList.size(), 8);
+console.log(linkedList.valueAt(0), 1);
+console.log(linkedList.valueAt(1), 1);
+console.log(linkedList.valueAt(2), 10);
+console.log(linkedList.valueAt(3), 10);
+console.log(linkedList.valueAt(4), 2);
+console.log(linkedList.valueAt(5), 3);
+console.log(linkedList.valueAt(6), 4);
+console.log(linkedList.valueAt(7), null);
+
+linkedList = buildList(test);
+console.log(linkedList.erase(1))
+console.log(linkedList.size(), 4)
+console.log(linkedList.valueAt(0), 0);
+console.log(linkedList.valueAt(1), 2);
+console.log(linkedList.valueAt(2), 3);
+
+linkedList = buildList(test);
+console.log(linkedList.valueAt(0), 0);
+console.log(linkedList.valueAt(1), 1);
+console.log(linkedList.valueAt(2), 3);
+console.log(linkedList.valueAt(3), 3);
+console.log(linkedList.valueAt(4), 4);
+console.log(linkedList.valueAt(5), null);
+console.log(linkedList.valueNFromEnd(0), 4)
+console.log(linkedList.valueNFromEnd(1), 3)
+
+linkedList = buildList(test);
+console.log(linkedList.valueAt(0), 0);
+console.log(linkedList.valueAt(1), 1);
+console.log(linkedList.valueAt(2), 3);
+console.log(linkedList.valueAt(3), 3);
+console.log(linkedList.valueAt(4), 4);
+console.log(linkedList.valueAt(5), null);
+console.log(linkedList.removeValue(0), 0)
+console.log(linkedList.valueAt(0), 1);
+console.log(linkedList.valueAt(1), 2);
+console.log(linkedList.valueAt(2), 3);
+console.log(linkedList.valueAt(3), 4);
+console.log(linkedList.valueAt(4), null);
+
+linkedList = buildList(test);
+console.log(linkedList.reverse())
+console.log(linkedList.valueAt(0), 4);
+console.log(linkedList.valueAt(1), 3);
+console.log(linkedList.valueAt(2), 2);
+console.log(linkedList.valueAt(3), 1);
+console.log(linkedList.valueAt(4), 0);
+console.log(linkedList.valueAt(5), null);
