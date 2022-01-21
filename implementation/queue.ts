@@ -3,7 +3,7 @@ import { LinkList } from './linked-list'
 interface Queue {
   enqueue(val): void;
   dequeue(): void;
-  isEmpty(): void; 
+  isEmpty(): boolean; 
 }
 
 const buildQueueLinkList = (startQueue?: number[]): Queue => {
@@ -22,7 +22,7 @@ const buildQueueArray = (startQueue?: number[]): Queue => {
   return {
     enqueue: (x: number) => queue.push(x),
     dequeue: () => queue.shift(),
-    isEmpty: () => queue.length === 0,
+    isEmpty: (): boolean => queue.length === 0,
   }
 }
 
