@@ -2,6 +2,7 @@
 // import { HashTable } from './hash-table'
 // import { SearchSubString } from './karp-rubin'
 import { binarySearch } from "./binary-search";
+import { MinHeap } from './min-heap'
 // const q = QueueLinkList([1,2,3])
 // const qArray = QueueArray([1,2,3])
 
@@ -31,7 +32,20 @@ import { binarySearch } from "./binary-search";
 // const isThere = SearchSubString('teeee', 'wewreteeeeasdfa');
 // console.log(isThere, true)
 
-const isExist = binarySearch([2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 
-  41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101], 101);
+const arr = [2, 3, 29, 31, 37, 
+  41, 43, 47,  83, 89, 97, 101, 1];
+
+const x = new MinHeap(arr)
+
+console.log(x.getMin())
+console.log(x.isEmpty())
+console.log(x.heap)
+console.log(x.extractMin())
+console.log(x.heap)
+
+
+
+// const isExist = binarySearch([2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 
+//   41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101], 101);
   
-console.log(isExist)
+// console.log(isExist)
