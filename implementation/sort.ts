@@ -43,7 +43,44 @@ const MergeSort = (array: Array<number>): Array<number> => {
 }
 
 const Quicksort = (array: Array<number>): Array<number> => {
-  return array;
+  // not inplace
+  // choose pivot
+  // check start and end of array to pivot
+  // make sure start/end is on right or left of pivot for gt or ls
+  // swap if fail
+  // iterate from start to end toware middle
+  // check
+  //  when start/end meet middle
+  // split array and sort again.
+  let i = 0;
+
+  const partition = (arr: Array<number>) => {
+    if(arr.length < 2) return arr;
+    const idx = Math.floor(arr.length/2)
+    const pivot = arr[idx]
+    let lte = 0;
+    let gte = arr.length - 1;
+  
+    while(lte < gte) {
+      while(arr[lte] < pivot) {
+        if(lte >= idx) break;
+        lte++;
+      }
+      while(arr[gte] > pivot) {
+        if(gte <= idx) break;
+        gte--;
+      }
+      if(lte<gte) {
+        const swap = arr[lte]
+        arr[lte] = arr[gte]
+        arr[gte] = swap; 
+        lte++;
+        gte--;
+      }
+    }
+    return lte;
+  }
+
 }
 
 export {  
